@@ -1,6 +1,6 @@
 name: Run jobs on every PR when opened or new commits are pushed
 
-on: 
+on:
   pull_request:
     types: [opened, ready_for_review, synchronize]
 
@@ -58,17 +58,17 @@ jobs:
             echo -n "a member kicked "
           fi
           echo "${GITHUB_SHA:0:6}"
-      - uses: jmatsu/dg-upload-app-action@master
-        id: dg
-        with:
-          app_owner_name: ${{ secrets.DEPLOYGATE_APP_OWNER_NAME }}
-          api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
-          app_file_path: ${{ steps.find-apk.outputs.path }}
-          message: ${{ steps.summary.outputs.message }}
-          release_note: This build is a debug-flavor build and for internal testing. ${{ steps.summary.outputs.message }}
-          distribution_find_by: name
-          distribution_id: ${{ github.event.number }}
-          ignore_api_failure: true
+#      - uses: jmatsu/dg-upload-app-action@master
+#        id: dg
+#        with:
+#          app_owner_name: ${{ secrets.DEPLOYGATE_APP_OWNER_NAME }}
+#          api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
+#          app_file_path: ${{ steps.find-apk.outputs.path }}
+#          message: ${{ steps.summary.outputs.message }}
+#          release_note: This build is a debug-flavor build and for internal testing. ${{ steps.summary.outputs.message }}
+#          distribution_find_by: name
+#          distribution_id: ${{ github.event.number }}
+#          ignore_api_failure: true
       - uses: actions/cache@v1
         with:
           path: ~/vendor/bundle
@@ -149,9 +149,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-bundle-
       - run: bundle check || bundle install --path=vendor/bundle --jobs=4 --clean --gemfile=.ci/Gemfile
-      - run: bundle exec --gemfile=.ci/Gemfile danger --dangerfile=".ci/danger/static_analysis.Dangerfile" --danger_id='static_analysis' --remove-previous-comments
-        env:
-          DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      - run: bundle exec --gemfile=.ci/Gemfile danger --dangerfile=".ci/danger/static_analysis.Dangerfile" --danger_id='static_analysis' --remove-previous-comments
+#        env:
+#          DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # TODO Download the latest apk from ...?
       # - name: Download an apk file
       #   uses: actions/download-artifact@v1
